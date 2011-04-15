@@ -8,7 +8,7 @@ import commands
 try:
      conn = MySQLdb.connect (host = "localhost",
                              user = "root",
-                             passwd = "slashs")
+                             passwd = "sm3")
      cursor = conn.cursor()
      cursor.execute("create database provenance")
      cursor.close()
@@ -22,7 +22,7 @@ conn.close()
 try:
      conn = MySQLdb.connect (host = "localhost",
                              user = "root",
-                             passwd = "slashs", 
+                             passwd = "sm3", 
 			     db = "provenance" )
 
      cursor = conn.cursor()
