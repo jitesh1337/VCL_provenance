@@ -1,0 +1,5 @@
+"sar" daemon runs in the background to collect information and put it in a logfile.
+This information is for a specific duration, say, 1 minute. This script parses
+this logfile and generates a human readable output suitable for transmission
+over to the provenance image.
+
