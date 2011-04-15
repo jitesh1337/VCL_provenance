@@ -1,0 +1,5 @@
+To track Saved Image state: (Just to make a note of what all things are currently there on the image saved)
+1)python and MySQL-python packages are installed.
+2)/root/VCL_provenance/ folder
+3)LAMP stack
+4)The web-code skeleton is in place
