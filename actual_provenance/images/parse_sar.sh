@@ -7,6 +7,8 @@ function usage()
 
 function analyze_cpu_usage()
 {
+	CPU_NUM_CORES=`cat /proc/cpuinfo  | grep ^processor | wc -l`;
+	echo CPU_NUM_CORES=$CPU_NUM_CORES;
 	sar -f $LOGFILE -u |  
 	(read; read; read; #Skip first 3 lines. Header.
 	CPU_PEAK=0;
@@ -36,6 +38,25 @@ function analyze_cpu_usage()
 		fi
 	done;
 	echo CPU_PEAK=$CPU_PEAK; )
+
+
+	sar -f $LOGFILE -q |  
+	(read; read; read; #Skip first 3 lines. Header.
+	CPU_PEAK=0;
+	while read LINE; do
+		if [ ! -z "`echo $LINE | grep \"^Average\"`" ]; then
+			#Average line
+			CPU_RUNQ=`echo $LINE | awk '{print $2}'`;
+			CPU_LOADAVG_1=`echo $LINE | awk '{print $4}'`;
+			CPU_LOADAVG_5=`echo $LINE | awk '{print $5}'`;
+			CPU_LOADAVG_15=`echo $LINE | awk '{print $6}'`;
+			echo CPU_RUNQ_LEN=$CPU_RUNQ
+			echo CPU_LOADAVG_1=$CPU_LOADAVG_1
+			echo CPU_LOADAVG_5=$CPU_LOADAVG_5
+			echo CPU_LOADAVG_15=$CPU_LOADAVG_15
+		fi
+	done;
+	)
 }
 
 function analyze_io_usage()
@@ -105,6 +126,136 @@ function analyze_paging_usage()
 	 )
 }
 
+function analyze_mem_usage()
+{
+	sar -f $LOGFILE -r |  
+	(read; read; read; #Skip first 3 lines. Header.
+	MEM_SIZE=`cat /proc/meminfo | grep "MemTotal" | awk '{print $2}'`
+	echo MEM_SIZE=$MEM_SIZE;
+	MEM_PEAK_USED=0;
+	while read LINE; do
+		if [ ! -z "`echo $LINE | grep \"^Average\"`" ]; then
+			#Average line
+			MEM_FREE=`echo $LINE | awk '{print $2}'`;
+			MEM_USED=`echo $LINE | awk '{print $3}'`;
+			echo MEM_FREE=$MEM_FREE
+			echo MEM_USED=$MEM_USED
+		else
+			#Extract information from intermediate readings.
+			MEM_USED=`echo $LINE | awk '{print $4}'`;
+
+			COMPARISON=`echo $MEM_USED \> $MEM_PEAK_USED | bc`
+			if [ "1" == "$COMPARISON" ]; then
+				MEM_PEAK_USED=$MEM_USED
+			fi
+		fi
+	done;
+	echo MEM_PEAK_USED=$MEM_PEAK_USED;
+	 )
+
+	sar -f $LOGFILE -S |  
+	(read; read; read; #Skip first 3 lines. Header.
+	SWAP_SIZE=`cat /proc/meminfo  | grep SwapTotal | awk '{print $2}'`
+	echo SWAP_SIZE=$SWAP_SIZE;
+	SWAP_PEAK_USED=0;
+	while read LINE; do
+		if [ ! -z "`echo $LINE | grep \"^Average\"`" ]; then
+			#Average line
+			SWAP_FREE=`echo $LINE | awk '{print $2}'`;
+			SWAP_USED=`echo $LINE | awk '{print $3}'`;
+			echo SWAP_FREE=$SWAP_FREE
+			echo SWAP_USED=$SWAP_USED
+		else
+			#Extract information from intermediate readings.
+			SWAP_USED=`echo $LINE | awk '{print $4}'`;
+
+			COMPARISON=`echo $SWAP_USED \> $SWAP_PEAK_USED | bc`
+			if [ "1" == "$COMPARISON" ]; then
+				SWAP_PEAK_USED=$SWAP_USED
+			fi
+		fi
+	done;
+	echo SWAP_PEAK_USED=$SWAP_PEAK_USED;
+	 )
+}
+
+function analyze_task_stats()
+{
+	sar -f $LOGFILE -w |  
+	(read; read; read; #Skip first 3 lines. Header.
+	while read LINE; do
+		if [ ! -z "`echo $LINE | grep \"^Average\"`" ]; then
+			#Average line
+			TASK_CREATED_PER_S=`echo $LINE | awk '{print $2}'`;
+			TASK_CTX_SWTICH_PER_S=`echo $LINE | awk '{print $3}'`;
+			echo TASK_CREATED_PER_SEC=$TASK_CREATED_PER_S
+			echo TASK_CONTEX_SWTICH_PER_SEC=$TASK_CTX_SWTICH_PER_S
+		fi
+	done;
+	echo TASK_NUM_TASKS=`ps aux --no-headers | wc -l`;
+	 )
+}
+
+function analyze_file_usage()
+{
+	sar -f $LOGFILE -v |  
+	(read; read; read; #Skip first 3 lines. Header.
+	FILE_HANDLES_PEAK=0
+	FILE_INODES_PEAK=0;
+	FILE_PSEUDO_TERMS_PEAK=0
+	while read LINE; do
+		if [ ! -z "`echo $LINE | grep \"^Average\"`" ]; then
+			#Average line
+			FILE_HANDLES=`echo $LINE | awk '{print $3}'`;
+			FILE_INODES=`echo $LINE | awk '{print $4}'`;
+			FILE_PSEUDO_TERMS=`echo $LINE | awk '{print $5}'`;
+			echo FILE_HANDLES=$FILE_HANDLES
+			echo FILE_INODES=$FILE_INODES
+			echo FILE_PSEUDO_TERMS=$FILE_PSEUDO_TERMS
+		else
+			#Extract information from intermediate readings.
+			FILE_HANDLES=`echo $LINE | awk '{print $4}'`;
+			FILE_INODES=`echo $LINE | awk '{print $5}'`;
+			FILE_PSEUDO_TERMS=`echo $LINE | awk '{print $6}'`;
+
+			COMPARISON=`echo $FILE_HANDLES \> $FILE_HANDLES_PEAK | bc`
+			if [ "1" == "$COMPARISON" ]; then
+				FILE_HANDLES_PEAK=$FILE_HANDLES
+			fi
+
+			COMPARISON=`echo $FILE_INODES \> $FILE_INODES_PEAK | bc`
+			if [ "1" == "$COMPARISON" ]; then
+				FILE_INODES_PEAK=$FILE_INODES;
+			fi
+
+			COMPARISON=`echo $FILE_PSEUDO_TERMS \> $FILE_PSEUDO_TERMS_PEAK | bc`
+			if [ "1" == "$COMPARISON" ]; then
+				FILE_PSEUDO_TERMS_PEAK=$FILE_PSEUDO_TERMS;
+			fi
+		fi
+	done;
+	echo FILE_HANDLES_PEAK=$FILE_HANDLES_PEAK;
+	echo FILE_INODES_PEAK=$FILE_INODES_PEAK;
+	echo FILE_PSEUDO_TERMS_PEAK=$FILE_PSEUDO_TERMS_PEAK;
+	 )
+}
+
+function analyze_fs_usage()
+{
+	df |
+	(read; #read the header
+	while read line; do
+	if [ "`echo $line | awk '{print $6}'`" == "/" ]; then
+		echo FS_ROOT_SIZE=`echo $line | awk '{print $2}'`
+		echo FS_ROOT_USED=`echo $line | awk '{print $5}'`
+	fi
+	if [ "`echo $line | awk '{print $6}'`" == "/home" ]; then
+		echo FS_HOME_SIZE=`echo $line | awk '{print $2}'`
+		echo FS_HOME_USED=`echo $line | awk '{print $5}'`
+	fi
+	done)
+}
+
 LOGFILE=$1
 if [ -z "$LOGFILE" ]; then
 	usage;
@@ -112,5 +263,9 @@ if [ -z "$LOGFILE" ]; then
 fi
 
 analyze_cpu_usage;
+analyze_mem_usage;
 analyze_io_usage;
 analyze_paging_usage;
+analyze_task_stats;
+analyze_file_usage;
+analyze_fs_usage;
