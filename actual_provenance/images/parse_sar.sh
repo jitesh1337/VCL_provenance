@@ -256,6 +256,28 @@ function analyze_fs_usage()
 	done)
 }
 
+function analyze_remote_login_info()
+{
+	who | 
+	(
+	LOGGED_IN_USERS=
+	while read line; do
+		USER=`echo $line | awk '{print $1}'`
+		REMOTE_HOST=`echo $line | awk '{print $5}' | sed 's/(//g' | sed 's/)//g'`
+		if [ -z "`echo $REMOTE_HOST | grep ^:`" ]; then
+			LOGGED_IN_USERS=$LOGGED_IN_USERS$USER@$REMOTE_HOST,
+		fi
+	done;
+	echo REMOTE_LOGINS_CURRENT=$LOGGED_IN_USERS
+	)
+}
+
+function analyze_network_usage()
+{
+	NR_TCP_CONN=$((`ss | wc -l`-1))
+	echo NET_NR_TCP_CONN=$NR_TCP_CONN;
+}
+
 LOGFILE=$1
 if [ -z "$LOGFILE" ]; then
 	usage;
@@ -269,3 +291,5 @@ analyze_paging_usage;
 analyze_task_stats;
 analyze_file_usage;
 analyze_fs_usage;
+analyze_remote_login_info;
+analyze_network_usage;
