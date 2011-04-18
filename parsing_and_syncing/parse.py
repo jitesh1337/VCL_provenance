@@ -27,6 +27,8 @@ while True:
 		#cols = 5
 	
                 print "Table:",Table,"IP:",ip,"Rows:",cols
+		#set_mn = "select mn_id from mn_info where mn_gre=%s" % (ip)
+
 		
 	else:
                 str1 = data.split('#')
@@ -36,7 +38,7 @@ while True:
 
                 sql = "insert into %s values(" % (Table)
 
-                str_f = ""
+                str_f = "%s," % (set_mn)
 
                 while i<cols:
                         str_f = str_f + "\"%s\"" % (str1[i])
@@ -47,13 +49,9 @@ while True:
                 str_f = str_f + ")"
 
                 sql = sql + str_f
-		# + brace + perct + " \ "+ str_d
-                #print sql
-
-                #print "Inserting : ", str1
-                #cursor.execute('insert into %s values("%s", "%s", "%s", "%s")' % \
-                 #      (Table, str1[0], str1[1], str1[2], str1[3]))
-		#cursor.execute(sql)
+	
+		cursor.execute(sql)	
+	
 		print "Inserting : ", sql
 
 
