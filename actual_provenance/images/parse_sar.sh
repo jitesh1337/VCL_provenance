@@ -276,6 +276,40 @@ function analyze_network_usage()
 {
 	NR_TCP_CONN=$((`ss | wc -l`-1))
 	echo NET_NR_TCP_CONN=$NR_TCP_CONN;
+
+	ip -s link | 
+	(
+	while read LINE; do
+		IFACE_NAME=`echo $LINE | awk '{print $2}' | cut -d':' -f1`
+		read; read; read LINE;
+		IFACE_RX=`echo $LINE | awk '{print $1}'`
+		read; read LINE;
+		IFACE_TX=`echo $LINE | awk '{print $1}'`
+		echo ${IFACE_NAME}_RXTX=$IFACE_NAME:$IFACE_RX:$IFACE_TX
+	done
+	)
+
+	sar -f $LOGFILE -n DEV | grep ^Average |  
+	(
+	IFACE_LIST=
+	while read LINE; do
+		IFACE_NAME=`echo $LINE | awk '{print $2}'`
+		IFACE_LIST="$IFACE_LIST $IFACE_NAME"
+		export IFACE_$IFACE_NAME="$IFACE_NAME:`echo $LINE | awk '{print $5}'`:`echo $LINE | awk '{print $6}'`"
+	done
+	
+	sar -f $LOGFILE -n EDEV | grep ^Average | 
+	(
+		while read LINE; do
+			IFACE_NAME=`echo $LINE | awk '{print $2}'`
+			eval export IFACE_$IFACE_NAME=\$IFACE_$IFACE_NAME:`echo $LINE | awk '{print $3}'`:`echo $LINE | awk '{print $4}'`:`echo $LINE | awk '{print $6}'`:`echo $LINE | awk '{print $7}'`
+		done
+		for iface in $IFACE_LIST; do
+			eval echo IFACE_$iface=\$IFACE_$iface
+		done
+	)
+	 )
+
 }
 
 LOGFILE=$1
