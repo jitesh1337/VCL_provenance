@@ -47,7 +47,7 @@ try:
  
      cursor.execute(query_str_5)
 
-     query_str_6 = "create table mn_computer ( mn_id int, computer_id int, eth0macaddress varchar(20), lastcheck datetime, reservation_id int, timestamp datetime, additionalinfo varchar(20), primary key (mn_id, computer_id)  )" 
+     query_str_6 = "create table mn_computer ( mn_id int, computer_id int, eth0macaddress varchar(20), lastcheck datetime, ip_address varchar(15), private_ip_address varchar(15), primary key (mn_id, computer_id)  )" 
  
      cursor.execute(query_str_6)
 
