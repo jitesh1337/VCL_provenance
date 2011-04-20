@@ -31,7 +31,7 @@ try:
  
      cursor.execute(query_str_1)
 
-     query_str_2 = "create table mn_images ( mn_id int, image_id int, name varchar(20), prettyname varchar(50), lastupdate datetime, datecreated datetime, primary key (mn_id, image_id)  )" 
+     query_str_2 = "create table mn_image ( mn_id int, image_id int, name varchar(20), prettyname varchar(50), lastupdate datetime, datecreated datetime, primary key (mn_id, image_id)  )" 
  
      cursor.execute(query_str_2)
 
