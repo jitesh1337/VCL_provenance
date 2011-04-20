@@ -100,7 +100,7 @@ except MySQLdb.Error, e:
 # Take information from the computer table
 # fields: computerid, eth0macaddress, lastcheck, reservationid, timestamp, additionalinfo
 f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
-print "Table#log#%s#6" % f
+print "Table#computer#%s#6" % f
 
 query_str="select C.id as computerid, C.eth0macaddress, C.lastcheck, CL.reservationid, CL.timestamp, CL.additionalinfo from computer C, computerloadlog CL where C.id = CL.computerid order by C.id asc"
 try:
