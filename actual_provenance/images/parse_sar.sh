@@ -310,6 +310,35 @@ function analyze_network_usage()
 	)
 	 )
 
+	sar -f $LOGFILE -n ICMP |  grep ^Average |
+	(
+	while read LINE; do
+		#Average line
+		ICMP_MSG_IN=`echo $LINE | awk '{print $2}'`;
+		NFS_ECHO_REQ=`echo $LINE | awk '{print $4}'`;
+		echo ICMP_MSG_IN=$ICMP_MSG_IN
+		echo NFS_ECHO_REQ=$NFS_ECHO_REQ
+	done;
+	 )
+
+}
+
+function analyze_nfs_stats()
+{
+	sar -f $LOGFILE -n NFS |  grep ^Average |
+	(
+	while read LINE; do
+		#Average line
+		NFS_CALLS=`echo $LINE | awk '{print $2}'`;
+		NFS_READ_CALLS=`echo $LINE | awk '{print $4}'`;
+		NFS_WRITE_CALLS=`echo $LINE | awk '{print $5}'`;
+		NFS_RETRANSMISSIONS=`echo $LINE | awk '{print $3}'`;
+		echo NFS_CALLS=$NFS_CALLS
+		echo NFS_READ_CALLS=$NFS_READ_CALLS
+		echo NFS_WRITE_CALLS=$NFS_WRITE_CALLS
+		echo NFS_RETRANSMISSIONS=$NFS_RETRANSMISSIONS
+	done;
+	 )
 }
 
 LOGFILE=$1
@@ -327,3 +356,4 @@ analyze_file_usage;
 analyze_fs_usage;
 analyze_remote_login_info;
 analyze_network_usage;
+analyze_nfs_stats;
