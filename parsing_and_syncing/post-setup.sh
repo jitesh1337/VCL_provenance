@@ -7,7 +7,7 @@
 /bin/sed -i 's/ListenAddress .*/ListenAddress 192.168.40.1/g' ssh_config_1
 /bin/sed -i 's/AllowUsers .*/AllowUsers sskanitk/g' ssh_config_1
 
-/bin/sed -i 's/ListenAddress .*/ListenAddress 192.168.50.1/g' ssh_config_2
+/bin/sed -i 's/ListenAddress .*/ListenAddress 192.168.5.1/g' ssh_config_2
 /bin/sed -i 's/AllowUsers .*/AllowUsers sskanitk/g' ssh_config_2
 
 /bin/sed -i 's/ListenAddress .*/ListenAddress 192.168.60.1/g' ssh_config_3
