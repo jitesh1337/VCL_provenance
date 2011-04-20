@@ -1,10 +1,20 @@
 #!/usr/bin/python
+import sys
+import math
 import MySQLdb
+
+# Usage: ./prase.py <mn_id> > /dev/null
+
+if len(sys.argv) != 2:
+	sys.exit("Provide the mn_id as command line argument!")
+
+set_mn = int(sys.argv[1])
+
 #Connection to the required Database (Provenance Image)
 conn = MySQLdb.connect (host = "localhost",
                            user = "root",
-                           passwd = "",
-                           db = "vcl")
+                           passwd = "sm3",
+                           db = "provenance")
 #Start a connection
 cursor = conn.cursor ()
                
@@ -25,7 +35,8 @@ while True:
                 ip = data[2]
                 cols = int(data[3])
 		#cols = 5
-	
+		Table = "mn_"+Table
+
                 print "Table:",Table,"IP:",ip,"Rows:",cols
 		#set_mn = "select mn_id from mn_info where mn_gre=%s" % (ip)
 
@@ -37,8 +48,8 @@ while True:
 		i = 0
 
                 sql = "insert into %s values(" % (Table)
-
-                str_f = "%s," % (set_mn)
+                
+		str_f = "%s," % (set_mn)
 
                 while i<cols:
                         str_f = str_f + "\"%s\"" % (str1[i])
