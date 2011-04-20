@@ -27,11 +27,11 @@ try:
 
      cursor = conn.cursor()
 
-     query_str_1 = "create table mn_info ( mn_id int NOT NULL primary key, mn_gre varchar(10), mn_public_ip varchar(20), my_tunn_addr varchar(20), mn_tunn_addr varchar(20) )" 
+     query_str_1 = "create table mn_info ( mn_id int NOT NULL primary key, mn_gre varchar(10), mn_public_ip varchar(50), my_tunn_addr varchar(50), mn_tunn_addr varchar(50) )" 
  
      cursor.execute(query_str_1)
 
-     query_str_2 = "create table mn_image ( mn_id int, image_id int, name varchar(20), prettyname varchar(50), lastupdate datetime, datecreated datetime, primary key (mn_id, image_id)  )" 
+     query_str_2 = "create table mn_image ( mn_id int, image_id int, name varchar(100), prettyname varchar(100), lastupdate datetime, datecreated datetime, primary key (mn_id, image_id)  )" 
  
      cursor.execute(query_str_2)
 
