@@ -153,7 +153,7 @@ function analyze_mem_usage()
 	echo MEM_PEAK_USED=$MEM_PEAK_USED;
 	 )
 
-	sar -f $LOGFILE -S |  
+	sar -f $LOGFILE -r |  
 	(read; read; read; #Skip first 3 lines. Header.
 	SWAP_SIZE=`cat /proc/meminfo  | grep SwapTotal | awk '{print $2}'`
 	echo SWAP_SIZE=$SWAP_SIZE;
@@ -161,13 +161,13 @@ function analyze_mem_usage()
 	while read LINE; do
 		if [ ! -z "`echo $LINE | grep \"^Average\"`" ]; then
 			#Average line
-			SWAP_FREE=`echo $LINE | awk '{print $2}'`;
-			SWAP_USED=`echo $LINE | awk '{print $3}'`;
+			SWAP_FREE=`echo $LINE | awk '{print $7}'`;
+			SWAP_USED=`echo $LINE | awk '{print $8}'`;
 			echo SWAP_FREE=$SWAP_FREE
 			echo SWAP_USED=$SWAP_USED
 		else
 			#Extract information from intermediate readings.
-			SWAP_USED=`echo $LINE | awk '{print $4}'`;
+			SWAP_USED=`echo $LINE | awk '{print $9}'`;
 
 			COMPARISON=`echo $SWAP_USED \> $SWAP_PEAK_USED | bc`
 			if [ "1" == "$COMPARISON" ]; then
@@ -274,10 +274,10 @@ function analyze_remote_login_info()
 
 function analyze_network_usage()
 {
-	NR_TCP_CONN=$((`ss | wc -l`-1))
+	NR_TCP_CONN=$((`netstat -t | (read; read; wc -l)`))
 	echo NET_NR_TCP_CONN=$NR_TCP_CONN;
 
-	ip -s link | 
+	/sbin/ip -s link | 
 	(
 	while read LINE; do
 		IFACE_NAME=`echo $LINE | awk '{print $2}' | cut -d':' -f1`
@@ -310,16 +310,16 @@ function analyze_network_usage()
 	)
 	 )
 
-	sar -f $LOGFILE -n ICMP |  grep ^Average |
-	(
-	while read LINE; do
-		#Average line
-		ICMP_MSG_IN=`echo $LINE | awk '{print $2}'`;
-		NFS_ECHO_REQ=`echo $LINE | awk '{print $4}'`;
-		echo ICMP_MSG_IN=$ICMP_MSG_IN
-		echo NFS_ECHO_REQ=$NFS_ECHO_REQ
-	done;
-	 )
+	#sar -f $LOGFILE -n ICMP |  grep ^Average |
+	#(
+	#while read LINE; do
+	#	#Average line
+	#	ICMP_MSG_IN=`echo $LINE | awk '{print $2}'`;
+	#	NFS_ECHO_REQ=`echo $LINE | awk '{print $4}'`;
+	#	echo ICMP_MSG_IN=$ICMP_MSG_IN
+	#	echo NFS_ECHO_REQ=$NFS_ECHO_REQ
+	#done;
+	# )
 
 }
 
@@ -357,3 +357,4 @@ analyze_fs_usage;
 analyze_remote_login_info;
 analyze_network_usage;
 analyze_nfs_stats;
+
