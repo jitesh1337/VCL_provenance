@@ -34,8 +34,8 @@ except MySQLdb.Error, e:
      print "Error %d: %s" % (e.args[0], e.args[1])
      sys.exit (1)
 
-#addr=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
-addr="127.0.0.1"
+addr=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
+#addr="127.0.0.1"
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serversocket.bind((addr, 5001))
 serversocket.listen(10)
@@ -52,7 +52,7 @@ while True:
 		fsock.close()
 		sys.stdout = oldout
 		continue;
-
+	
 	# Read gre1 interface IP address
 	f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
 
