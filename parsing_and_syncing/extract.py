@@ -64,21 +64,21 @@ while True:
 	exec_query(query_str)
 
 
-	# Take information from the reservation table
-	# fields: imageid, requestid, reservationid, managementnodeid, lastcheck 
-	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
-	print "Table#reservation#%s#5" % f
-	clientsocket.send("Table#reservation#%s#5\n" % f);
-	query_str="select imageid, requestid, id as reservationid, managementnodeid, lastcheck from reservation order by imageid asc"
-	exec_query(query_str)
-
-
 	# Take information from the request table
 	# fields: requestid, logid, start, end, daterequested 
 	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
 	print "Table#request#%s#5" % f
 	clientsocket.send("Table#request#%s#5\n" % f);
 	query_str="select id as requestid, logid, start, end, daterequested from request order by requestid asc"
+	exec_query(query_str)
+
+
+	# Take information from the reservation table
+	# fields: imageid, requestid, reservationid, managementnodeid, lastcheck 
+	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
+	print "Table#reservation#%s#5" % f
+	clientsocket.send("Table#reservation#%s#5\n" % f);
+	query_str="select imageid, requestid, id as reservationid, managementnodeid, lastcheck from reservation order by imageid asc"
 	exec_query(query_str)
 
 

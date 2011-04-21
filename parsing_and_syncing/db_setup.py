@@ -31,27 +31,29 @@ try:
  
      cursor.execute(query_str_1)
 
-     query_str_2 = "create table mn_image ( mn_id int, image_id int, name varchar(100), prettyname varchar(100), lastupdate datetime, datecreated datetime, primary key (mn_id, image_id)  )" 
+     query_str_2 = "create table mn_image ( mn_id int, image_id int, name varchar(100), prettyname varchar(100), lastupdate datetime, datecreated datetime, primary key (mn_id, image_id), foreign key (mn_id) references mn_info )"
  
      cursor.execute(query_str_2)
 
-     query_str_3 = "create table mn_reservation ( mn_id int, image_id int, request_id int, reservation_id int, mnnode int, lastcheck datetime, primary key (mn_id, image_id, request_id, reservation_id)  )" 
- 
-     cursor.execute(query_str_3)
-
-     query_str_4 = "create table mn_request ( mn_id int, request_id int, logid int, start datetime, end datetime, daterequested datetime, primary key (mn_id, request_id)  )" 
+     query_str_4 = "create table mn_request ( mn_id int, request_id int, logid int, start datetime, end datetime, daterequested datetime, primary key (mn_id, request_id), foreign key (mn_id) references mn_info )" 
  
      cursor.execute(query_str_4)
 
-     query_str_5 = "create table mn_log ( mn_id int, logid int, image_id int, request_id int, start datetime, initialend datetime, finalend datetime, primary key (mn_id, logid)  )" 
+     query_str_3 = "create table mn_reservation ( mn_id int, image_id int, request_id int, reservation_id int, mnnode int, lastcheck datetime, primary key (mn_id, image_id, request_id, reservation_id), foreign key (mn_id, image_id) references mn_image, foreign key (mn_id, request_id) references mn_request )" 
+ 
+     cursor.execute(query_str_3)
+
+
+     query_str_5 = "create table mn_log ( mn_id int, logid int, image_id int, request_id int, start datetime, initialend datetime, finalend datetime, primary key (mn_id, logid), foreign key (mn_id, request_id) references mn_request, foreign key (mn_id, image_id) references mn_image )" 
  
      cursor.execute(query_str_5)
 
-     query_str_6 = "create table mn_computer ( mn_id int, computer_id int, eth0macaddress varchar(20), lastcheck datetime, ip_address varchar(15), private_ip_address varchar(15), primary key (mn_id, computer_id)  )" 
+
+     query_str_6 = "create table mn_computer ( mn_id int, computer_id int, eth0macaddress varchar(20), lastcheck datetime, ip_address varchar(15), private_ip_address varchar(15), primary key (mn_id, computer_id), foreign key (mn_id) references mn_info )" 
  
      cursor.execute(query_str_6)
 
-     query_str_7 = "create table mn_dyn_info ( set_mn int , image_id int, reservation_id int, cpu_num_cores int, cpu_idle float, cpu_peak float, cpu_loadavg float, mem_size float, mem_free float, mem_used float, io_block_reads float, io_block_writes float, eth0_rx float, eth0_tx float, wlan0_rx float, wlan0_tx float)"
+     query_str_7 = "create table mn_dyn_info ( mn_id int , image_id int, reservation_id int, cpu_num_cores int, cpu_idle float, cpu_peak float, cpu_loadavg float, mem_size float, mem_free float, mem_used float, io_block_reads float, io_block_writes float, eth0_rx float, eth0_tx float, wlan0_rx float, wlan0_tx float, foreign key (mn_id, image_id) references mn_image, foreign key (mn_id, reservation_id) references mn_reservation )"
 
      cursor.execute(query_str_7)
 
