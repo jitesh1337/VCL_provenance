@@ -44,7 +44,7 @@ while True:
 	sys.stdout = fsock
 
 	(clientsocket, addr) = serversocket.accept()
-	line = clientsock.readline()
+	line = clientsocket.recv(4)
 	if line != "GET":
 		clientsocket.close()
 		fsock.close()
@@ -99,8 +99,8 @@ while True:
 
 	sys.stdout=oldout
 	fsock.close()
-	conn.close()
 	clientsocket.close();
 
 
 serversocket.close();
+conn.close()

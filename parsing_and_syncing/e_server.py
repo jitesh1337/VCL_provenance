@@ -18,12 +18,12 @@ if mn_id == 3:
 	addr = "192.168.60.1"
 
 oldout = sys.stdout
-fsock = open('/tmp/dyn_logfile', 'w')
+fsock = open('/tmp/output', 'w')
 sys.stdout = fsock
 
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-serversocket.bind((addr, 5000))
+serversocket.bind((addr, 5001))
 
 serversocket.listen(1)
 
@@ -42,6 +42,6 @@ sys.stdout = oldout
 fsock.close()
 
 set_mn = sys.argv[1]
-str = "python /root/VCL_provenance/parsing_and_syncing/dyn_parse.py " + set_mn + " /tmp/dyn_logfile"
+str = "python /root/VCL_provenance/parsing_and_syncing/parse.py " + set_mn
 os.system(str)
 

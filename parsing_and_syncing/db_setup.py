@@ -51,6 +51,9 @@ try:
  
      cursor.execute(query_str_6)
 
+     query_str_7 = "create table mn_dyn_info ( set_mn int , image_id int, reservation_id int, cpu_num_cores int, cpu_idle float, cpu_peak float, cpu_loadavg float, mem_size float, mem_free float, mem_used float, io_block_reads float, io_block_writes float, eth0_rx float, eth0_tx float, wlan0_rx float, wlan0_tx float)"
+
+     cursor.execute(query_str_7)
 
      fp = open("/tmp/tab_mn_info","r")
 
