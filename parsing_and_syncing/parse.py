@@ -77,4 +77,5 @@ while True:
 #        print "Image Name:", row[0]
 
 cursor.close ()
+conn.commit()
 conn.close ()
