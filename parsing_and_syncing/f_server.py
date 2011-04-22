@@ -17,31 +17,33 @@ if mn_id == 2:
 if mn_id == 3:
 	addr = "192.168.60.1"
 
-oldout = sys.stdout
-fsock = open('/tmp/dyn_logfile', 'w')
-sys.stdout = fsock
-
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 serversocket.bind((addr, 5000))
 
 serversocket.listen(1)
 
-(clientsocket, addr) = serversocket.accept()
-clientfile = clientsocket.makefile('r', 0)
-	
 while 1:
-	line = clientfile.readline()
-	if line == '':
-		break
-	line_1 = line.split("\n")
-	print "%s" % (line_1[0])
-clientsocket.close()
+	oldout = sys.stdout
+	fsock = open('/tmp/dyn_logfile', 'w')
+	sys.stdout = fsock
 
-sys.stdout = oldout
-fsock.close()
+	(clientsocket, addr) = serversocket.accept()
+	clientfile = clientsocket.makefile('r', 0)
+	
+	while 1:
+		line = clientfile.readline()
+		if line == '':
+			break
+		line_1 = line.split("\n")
+		print "%s" % (line_1[0])
 
-set_mn = sys.argv[1]
-str = "python /root/VCL_provenance/parsing_and_syncing/dyn_parse.py " + set_mn + " /tmp/dyn_logfile"
-os.system(str)
+	clientsocket.close()
+
+	sys.stdout = oldout
+	fsock.close()
+
+	set_mn = sys.argv[1]
+	str = "python /root/VCL_provenance/parsing_and_syncing/dyn_parse.py " + set_mn + " /tmp/dyn_logfile"
+	os.system(str)
 
