@@ -34,8 +34,8 @@ except MySQLdb.Error, e:
      print "Error %d: %s" % (e.args[0], e.args[1])
      sys.exit (1)
 
-#addr=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
-addr="127.0.0.1"
+addr=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
+#addr="127.0.0.1"
 serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 serversocket.bind((addr, 5001))
 serversocket.listen(10)
@@ -52,7 +52,7 @@ while True:
 		fsock.close()
 		sys.stdout = oldout
 		continue;
-
+	
 	# Read gre1 interface IP address
 	f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
 
@@ -82,6 +82,15 @@ while True:
 	exec_query(query_str)
 
 
+	# Take information from the computer table
+	# fields: computerid, eth0macaddress, lastcheck, reservationid, timestamp, additionalinfo
+	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
+	print "Table#computer#%s#5" % f
+	clientsocket.send("Table#computer#%s#5\n" % f)
+	query_str="select C.id as computerid, C.eth0macaddress, C.lastcheck, C.IPaddress, C.privateIPaddress from computer C order by C.id asc"
+	exec_query(query_str);
+
+
 	# Take information from the Log table
 	# fields: logid, imageid, requestid, start, initialend, finalend
 	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
@@ -90,14 +99,6 @@ while True:
 	query_str="select id as logid, imageid, requestid, start, initialend, finalend from log order by logid asc"
 	exec_query(query_str)
 
-
-	# Take information from the computer table
-	# fields: computerid, eth0macaddress, lastcheck, reservationid, timestamp, additionalinfo
-	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
-	print "Table#computer#%s#5" % f
-	clientsocket.send("Table#computer#%s#5\n" % f)
-	query_str="select C.id as computerid, C.eth0macaddress, C.lastcheck, C.IPaddress, C.privateIPaddress from computer C order by C.id asc"
-	exec_query(query_str);
 
 	sys.stdout=oldout
 	fsock.close()

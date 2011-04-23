@@ -102,5 +102,6 @@ while True:
 		print sql
 
 cursor.close()
+conn.commit()
 conn.close()
 
