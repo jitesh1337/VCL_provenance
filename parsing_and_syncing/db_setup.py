@@ -34,13 +34,17 @@ try:
 
      query_str_2 = "create table mn_image ( mn_id int, image_id int, name varchar(100), prettyname varchar(100), lastupdate datetime, datecreated datetime, primary key (mn_id, image_id), foreign key (mn_id) references mn_info(mn_id) ) engine=innodb "
  
+     query_str_8 = "create table mn_user ( mn_id int, user_id int, unityid varchar(80), firstname varchar(50), lastname varchar(50), primary key (mn_id, user_id), foreign key(mn_id) references mn_info(mn_id) ) engine=innodb "
+ 
+     cursor.execute(query_str_8)
+
      cursor.execute(query_str_2)
 
-     query_str_5 = "create table mn_log ( mn_id int, log_id int, image_id int, request_id int, start datetime, initialend datetime, finalend datetime, primary key (mn_id, log_id), foreign key (mn_id, image_id) references mn_image(mn_id, image_id) ) engine=innodb "
+     query_str_5 = "create table mn_log ( mn_id int, log_id int, image_id int, request_id int, user_id int, start datetime, initialend datetime, finalend datetime, primary key (mn_id, log_id), foreign key (mn_id, image_id) references mn_image(mn_id, image_id), foreign key (mn_id, user_id) references mn_user(mn_id, user_id) ) engine=innodb "
  
      cursor.execute(query_str_5)
 
-     query_str_4 = "create table mn_request ( mn_id int, request_id int, logid int, start datetime, end datetime, daterequested datetime, primary key (mn_id, request_id), foreign key (mn_id) references mn_info(mn_id) ) engine=innodb "
+     query_str_4 = "create table mn_request ( mn_id int, request_id int, logid int, user_id int, start datetime, end datetime, daterequested datetime, primary key (mn_id, request_id), foreign key (mn_id) references mn_info(mn_id), foreign key (mn_id, user_id) references mn_user(mn_id, user_id) ) engine=innodb "
  
      cursor.execute(query_str_4)
 

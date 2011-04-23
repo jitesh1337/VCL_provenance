@@ -63,6 +63,20 @@ while True:
 	query_str="select I.id, I.name, I.prettyname, I.lastupdate, IR.datecreated from image I, imagerevision IR where I.id = IR.id order by I.id asc"
 	exec_query(query_str)
 
+	# Take information from the user table
+	# fields: id, name, prettyname, lastupdate, datecreated
+	print "Table#user#%s#4" % f
+	clientsocket.send("Table#user#%s#4\n" % f)
+	query_str="select id, unityid, firstname, lastname from user order by id asc"
+	exec_query(query_str)
+
+	# Take information from the Log table
+	# fields: logid, imageid, requestid, start, initialend, finalend
+	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
+	print "Table#log#%s#6" % f
+	clientsocket.send("Table#log#%s#6\n" % f);
+	query_str="select id as logid, imageid, requestid, start, initialend, finalend from log order by logid asc"
+	exec_query(query_str)
 
 	# Take information from the request table
 	# fields: requestid, logid, start, end, daterequested 
@@ -89,15 +103,6 @@ while True:
 	clientsocket.send("Table#computer#%s#5\n" % f)
 	query_str="select C.id as computerid, C.eth0macaddress, C.lastcheck, C.IPaddress, C.privateIPaddress from computer C order by C.id asc"
 	exec_query(query_str);
-
-
-	# Take information from the Log table
-	# fields: logid, imageid, requestid, start, initialend, finalend
-	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
-	print "Table#log#%s#6" % f
-	clientsocket.send("Table#log#%s#6\n" % f);
-	query_str="select id as logid, imageid, requestid, start, initialend, finalend from log order by logid asc"
-	exec_query(query_str)
 
 
 	sys.stdout=oldout
