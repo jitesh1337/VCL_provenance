@@ -28,7 +28,7 @@ while True:
 	qstr = "select R.imageid, L.id, R.id from reservation R, log L, request Req, computer C  where R.requestid = Req.id and Req.logid = L.id and R.computerid = C.id and C.privateIPaddress = \"%s\" and L.finalend > NOW();" % (clientsocket.getpeername()[0])
 	cursor.execute(qstr);
         row = cursor.fetchone();
-	print "IMG_ID=" + str(row[0])
+	print "IMAGE_ID=" + str(row[0])
 	print "LOG_ID=" + str(row[1])
 	print "RESERVATION_ID=" + str(row[2])
 	cursor.close()
