@@ -48,6 +48,7 @@ CPU_LOADAVG=0
 MEM_SIZE=0
 MEM_FREE=0
 MEM_USED=0
+MEM_PEAK_USED=0
 IO_BLOCK_READS=0
 IO_BLOCK_WRITES=0
 eth0_rx=0
@@ -77,7 +78,7 @@ while True:
 			mn_id = sys.argv[1]
 			str = "python /root/VCL_provenance/parsing_and_syncing/e_client.py " + mn_id
 			os.system(str)
-			sql = "insert into mn_dyn_info values (%d,%d,%d,%d, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)" % (set_mn, IMAGE_ID, LOG_ID, RESERVATION_ID)
+			sql = "insert into mn_dyn_info values (%d,%d,%d,%d, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)" % (set_mn, IMAGE_ID, LOG_ID, RESERVATION_ID)
 			print sql
 			cursor.execute(sql)
 	
@@ -108,6 +109,11 @@ while True:
 		line_1 = line[1].split("\n")
 		MEM_USED = line_1[0]
 
+	if line[0] == "MEM_PEAK_USED":
+		line_1 = line[1].split("\n")
+		MEM_PEAK_USED = line_1[0]
+
+
 	if line[0] == "IO_BLOCK_READS":
 		line_1 = line[1].split("\n")
 		IO_BLOCK_READS = line_1[0]
@@ -127,7 +133,7 @@ while True:
 		wlan0_rx = line_1[1]
 		line_2 = line_1[2].split("\n")
 		wlan0_tx = line_2[0]
-		sql = "update mn_dyn_info set cpu_num_cores=%s, cpu_idle=%s, cpu_peak=%s, cpu_loadavg=%s, mem_size=%s, mem_free=%s, mem_used=%s, io_block_reads=%s, io_block_writes=%s, eth0_rx=%s, eth0_tx=%s, wlan0_rx=%s, wlan0_tx=%s where mn_id=%d and image_id=%d and log_id=%d " % (CPU_NUM_CORES,CPU_IDLE,CPU_PEAK,CPU_LOADAVG,MEM_SIZE,MEM_FREE,MEM_USED,IO_BLOCK_READS,IO_BLOCK_WRITES,eth0_rx,eth0_tx,wlan0_rx,wlan0_tx, set_mn, IMAGE_ID, RESERVATION_ID)	
+		sql = "update mn_dyn_info set cpu_num_cores=%s, cpu_idle=%s, cpu_peak=%s, cpu_loadavg=%s, mem_size=%s, mem_free=%s, mem_used=%s, mem_peak_used=%s, io_block_reads=%s, io_block_writes=%s, eth0_rx=%s, eth0_tx=%s, wlan0_rx=%s, wlan0_tx=%s where mn_id=%d and image_id=%d and log_id=%d " % (CPU_NUM_CORES,CPU_IDLE,CPU_PEAK,CPU_LOADAVG,MEM_SIZE,MEM_FREE,MEM_USED,MEM_PEAK_USED, IO_BLOCK_READS,IO_BLOCK_WRITES,eth0_rx,eth0_tx,wlan0_rx,wlan0_tx, set_mn, IMAGE_ID, RESERVATION_ID)	
 		print sql
 		cursor.execute(sql)
 
