@@ -3,8 +3,8 @@
 import socket
 import sys
 
-#clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#clientsocket.connect(('192.168.50.1', 5555))
+clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+clientsocket.connect(('192.168.50.1', 5555))
 while 1:
         fp = open("parse_sar_output","r")
         while 1:
@@ -13,12 +13,9 @@ while 1:
                         break;
                 if line == '':
                         break;
-                print line,
-                #clientsocket.send(line)
-#       clientsocket.close()
-#       clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#       clientsocket.connect(('192.168.50.1', 5555))
+                #print line,
+                clientsocket.send(line)
+        clientsocket.close()
+        clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        clientsocket.connect(('192.168.50.1', 5555))
         fp.close()
-                #clientsocket.send(line)
-
-#clientsocket.close()
