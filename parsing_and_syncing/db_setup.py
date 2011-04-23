@@ -34,13 +34,18 @@ try:
 
      query_str_2 = "create table mn_image ( mn_id int, image_id int, name varchar(100), prettyname varchar(100), lastupdate datetime, datecreated datetime, primary key (mn_id, image_id), foreign key (mn_id) references mn_info(mn_id) ) engine=innodb "
  
+     cursor.execute(query_str_2)
+
      query_str_8 = "create table mn_user ( mn_id int, user_id int, unityid varchar(80), firstname varchar(50), lastname varchar(50), primary key (mn_id, user_id), foreign key(mn_id) references mn_info(mn_id) ) engine=innodb "
  
      cursor.execute(query_str_8)
 
-     cursor.execute(query_str_2)
+     query_str_6 = "create table mn_computer ( mn_id int, computer_id int, eth0macaddress varchar(20), lastcheck datetime, ip_address varchar(15), private_ip_address varchar(15), primary key (mn_id, computer_id), foreign key (mn_id) references mn_info(mn_id) ) engine=innodb "
+ 
+     cursor.execute(query_str_6)
 
-     query_str_5 = "create table mn_log ( mn_id int, log_id int, image_id int, request_id int, user_id int, start datetime, initialend datetime, finalend datetime, primary key (mn_id, log_id), foreign key (mn_id, image_id) references mn_image(mn_id, image_id), foreign key (mn_id, user_id) references mn_user(mn_id, user_id) ) engine=innodb "
+
+     query_str_5 = "create table mn_log ( mn_id int, log_id int, image_id int, request_id int, user_id int, computer_id int, start datetime, initialend datetime, finalend datetime, primary key (mn_id, log_id), foreign key (mn_id, image_id) references mn_image(mn_id, image_id), foreign key (mn_id, user_id) references mn_user(mn_id, user_id), foreign key (mn_id, computer_id) references mn_computer(mn_id, computer_id) ) engine=innedb "
  
      cursor.execute(query_str_5)
 
@@ -51,10 +56,6 @@ try:
      query_str_3 = "create table mn_reservation ( mn_id int, log_id int, image_id int, request_id int, reservation_id int, mnnode int, lastcheck datetime, primary key (mn_id, log_id), foreign key (mn_id, image_id) references mn_image(mn_id, image_id), foreign key (mn_id, request_id) references mn_request(mn_id, request_id), foreign key (mn_id, log_id) references mn_log(mn_id,log_id) ) engine=innodb "
  
      cursor.execute(query_str_3)
-
-     query_str_6 = "create table mn_computer ( mn_id int, computer_id int, eth0macaddress varchar(20), lastcheck datetime, ip_address varchar(15), private_ip_address varchar(15), primary key (mn_id, computer_id), foreign key (mn_id) references mn_info(mn_id) ) engine=innodb "
- 
-     cursor.execute(query_str_6)
 
      query_str_7 = "create table mn_dyn_info ( mn_id int, image_id int, log_id int, reservation_id int, cpu_num_cores int, cpu_idle float, cpu_peak float, cpu_loadavg float, mem_size float, mem_free float, mem_used float, mem_peak_used float, io_block_reads float, io_block_writes float, eth0_rx float, eth0_tx float, eth1_rx float, eth1_tx float, primary key (mn_id, image_id, log_id), foreign key (mn_id, image_id) references mn_image(mn_id, image_id), foreign key (mn_id, log_id) references mn_log(mn_id, log_id) ) engine=innodb"
 

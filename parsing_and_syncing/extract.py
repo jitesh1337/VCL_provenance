@@ -73,9 +73,9 @@ while True:
 	# Take information from the Log table
 	# fields: logid, imageid, requestid, start, initialend, finalend
 	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
-	print "Table#log#%s#6" % f
+	print "Table#log#%s#7" % f
 	clientsocket.send("Table#log#%s#6\n" % f);
-	query_str="select id as logid, imageid, requestid, start, initialend, finalend from log order by logid asc"
+	query_str="select id as logid, imageid, requestid, computerid, start, initialend, finalend from log order by logid asc"
 	exec_query(query_str)
 
 	# Take information from the request table
