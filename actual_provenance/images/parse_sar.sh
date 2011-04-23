@@ -347,19 +347,15 @@ if [ -z "$LOGFILE" ]; then
 	exit;
 fi
 
-while true; do
-	rm -f "$LOGFILE"
-	sar -o "$LOGFILE" 1 6 > /dev/null
-	analyze_cpu_usage;
-	analyze_mem_usage;
-	analyze_io_usage;
-	analyze_paging_usage;
-	analyze_task_stats;
-	analyze_file_usage;
-	analyze_fs_usage;
-	analyze_remote_login_info;
-	analyze_network_usage;
-	analyze_nfs_stats;
-	echo END
-done;
+analyze_cpu_usage;
+analyze_mem_usage;
+analyze_io_usage;
+analyze_paging_usage;
+analyze_task_stats;
+analyze_file_usage;
+analyze_fs_usage;
+analyze_remote_login_info;
+analyze_network_usage;
+analyze_nfs_stats;
+echo END
 
