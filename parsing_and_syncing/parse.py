@@ -60,7 +60,11 @@ while True:
                 str_f = str_f + ")"
 
                 sql = sql + str_f
-	
+		
+		if Table == "mn_reservation":
+			sql_1 = "delete from mn_reservation"
+			cursor.execute(sql_1)
+
 		cursor.execute(sql)	
 	
 		print "Inserting : ", sql

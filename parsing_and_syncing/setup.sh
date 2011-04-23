@@ -34,7 +34,7 @@ echo $MY_PUBLIC_ADDR
 # echo "Creating tunnel interface at MN1"
 # Create the Tunnel Interface at MN1.
 echo "/sbin/modprobe tun" > mn1
-echo "sbin/modprobe ip_gre" >> mn1
+echo "/sbin/modprobe ip_gre" >> mn1
 echo "/sbin/ip tunnel add gre1 mode gre remote $MY_PUBLIC_ADDR local $MN1_PUBLIC_ADDR" >> mn1
 echo "/sbin/ip addr add $MN1_TUNNEL_ADDR dev gre1 peer $MY_TUNNEL_ADDR1" >> mn1
 echo "/sbin/ip link set gre1 up" >> mn1
