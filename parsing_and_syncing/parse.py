@@ -65,8 +65,11 @@ while True:
 			sql_1 = "delete from mn_reservation"
 			cursor.execute(sql_1)
 
-		cursor.execute(sql)	
-	
+		try:
+			cursor.execute(sql)	
+		except MySQLdb.Error, e:
+			print "Insert failed - silently ignored....."
+
 		print "Inserting : ", sql
 
 
