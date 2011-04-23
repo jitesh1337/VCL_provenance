@@ -53,8 +53,8 @@ IO_BLOCK_READS=0
 IO_BLOCK_WRITES=0
 eth0_rx=0
 eth0_tx=0
-wlan0_rx=0
-wlan0_tx=0
+eth1_rx=0
+eth1_tx=0
 
 while True:
 	line = fp.readline()
@@ -130,10 +130,10 @@ while True:
 
 	if line[0] == "wlan0_RXTX":
 		line_1 = line[1].split(":")
-		wlan0_rx = line_1[1]
+		eth1_rx = line_1[1]
 		line_2 = line_1[2].split("\n")
-		wlan0_tx = line_2[0]
-		sql = "update mn_dyn_info set cpu_num_cores=%s, cpu_idle=%s, cpu_peak=%s, cpu_loadavg=%s, mem_size=%s, mem_free=%s, mem_used=%s, mem_peak_used=%s, io_block_reads=%s, io_block_writes=%s, eth0_rx=%s, eth0_tx=%s, wlan0_rx=%s, wlan0_tx=%s where mn_id=%d and image_id=%d and log_id=%d " % (CPU_NUM_CORES,CPU_IDLE,CPU_PEAK,CPU_LOADAVG,MEM_SIZE,MEM_FREE,MEM_USED,MEM_PEAK_USED, IO_BLOCK_READS,IO_BLOCK_WRITES,eth0_rx,eth0_tx,wlan0_rx,wlan0_tx, set_mn, IMAGE_ID, RESERVATION_ID)	
+		eth1_tx = line_2[0]
+		sql = "update mn_dyn_info set cpu_num_cores=%s, cpu_idle=%s, cpu_peak=%s, cpu_loadavg=%s, mem_size=%s, mem_free=%s, mem_used=%s, mem_peak_used=%s, io_block_reads=%s, io_block_writes=%s, eth0_rx=%s, eth0_tx=%s, eth1_rx=%s, eth1_tx=%s where mn_id=%d and image_id=%d and log_id=%d " % (CPU_NUM_CORES,CPU_IDLE,CPU_PEAK,CPU_LOADAVG,MEM_SIZE,MEM_FREE,MEM_USED,MEM_PEAK_USED, IO_BLOCK_READS,IO_BLOCK_WRITES,eth0_rx,eth0_tx,eth1_rx,eth1_tx, set_mn, IMAGE_ID, RESERVATION_ID)	
 		print sql
 		cursor.execute(sql)
 
