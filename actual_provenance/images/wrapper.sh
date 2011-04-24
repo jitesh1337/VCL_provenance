@@ -2,7 +2,7 @@
 
 PIPE=parse_sar_output
 
-if [ -z "`rpm -q systat`" ]; then
+if [ -z "`rpm -q sysstat | grep -v "not installed"`" ]; then
         sudo yum install sysstat -y
 fi
 
