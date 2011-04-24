@@ -186,9 +186,7 @@ function analyze_task_stats()
 	while read LINE; do
 		if [ ! -z "`echo $LINE | grep \"^Average\"`" ]; then
 			#Average line
-			TASK_CREATED_PER_S=`echo $LINE | awk '{print $2}'`;
-			TASK_CTX_SWTICH_PER_S=`echo $LINE | awk '{print $3}'`;
-			echo TASK_CREATED_PER_SEC=$TASK_CREATED_PER_S
+			TASK_CTX_SWTICH_PER_S=`echo $LINE | awk '{print $2}'`;
 			echo TASK_CONTEX_SWTICH_PER_SEC=$TASK_CTX_SWTICH_PER_S
 		fi
 	done;
@@ -202,7 +200,7 @@ function analyze_file_usage()
 	(read; read; read; #Skip first 3 lines. Header.
 	FILE_HANDLES_PEAK=0
 	FILE_INODES_PEAK=0;
-	FILE_PSEUDO_TERMS_PEAK=0
+	#FILE_PSEUDO_TERMS_PEAK=0
 	while read LINE; do
 		if [ ! -z "`echo $LINE | grep \"^Average\"`" ]; then
 			#Average line
@@ -211,12 +209,12 @@ function analyze_file_usage()
 			FILE_PSEUDO_TERMS=`echo $LINE | awk '{print $5}'`;
 			echo FILE_HANDLES=$FILE_HANDLES
 			echo FILE_INODES=$FILE_INODES
-			echo FILE_PSEUDO_TERMS=$FILE_PSEUDO_TERMS
+			#echo FILE_PSEUDO_TERMS=$FILE_PSEUDO_TERMS
 		else
 			#Extract information from intermediate readings.
 			FILE_HANDLES=`echo $LINE | awk '{print $4}'`;
 			FILE_INODES=`echo $LINE | awk '{print $5}'`;
-			FILE_PSEUDO_TERMS=`echo $LINE | awk '{print $6}'`;
+			#FILE_PSEUDO_TERMS=`echo $LINE | awk '{print $6}'`;
 
 			COMPARISON=`echo $FILE_HANDLES \> $FILE_HANDLES_PEAK | bc`
 			if [ "1" == "$COMPARISON" ]; then
@@ -228,15 +226,15 @@ function analyze_file_usage()
 				FILE_INODES_PEAK=$FILE_INODES;
 			fi
 
-			COMPARISON=`echo $FILE_PSEUDO_TERMS \> $FILE_PSEUDO_TERMS_PEAK | bc`
-			if [ "1" == "$COMPARISON" ]; then
-				FILE_PSEUDO_TERMS_PEAK=$FILE_PSEUDO_TERMS;
-			fi
+			#COMPARISON=`echo $FILE_PSEUDO_TERMS \> $FILE_PSEUDO_TERMS_PEAK | bc`
+			#if [ "1" == "$COMPARISON" ]; then
+			#	FILE_PSEUDO_TERMS_PEAK=$FILE_PSEUDO_TERMS;
+			#fi
 		fi
 	done;
 	echo FILE_HANDLES_PEAK=$FILE_HANDLES_PEAK;
 	echo FILE_INODES_PEAK=$FILE_INODES_PEAK;
-	echo FILE_PSEUDO_TERMS_PEAK=$FILE_PSEUDO_TERMS_PEAK;
+	#echo FILE_PSEUDO_TERMS_PEAK=$FILE_PSEUDO_TERMS_PEAK;
 	 )
 }
 
