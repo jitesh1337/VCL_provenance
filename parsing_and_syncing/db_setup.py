@@ -53,7 +53,7 @@ try:
  
      cursor.execute(query_str_4)
 
-     query_str_3 = "create table mn_reservation ( mn_id int, log_id int, image_id int, request_id int, reservation_id int, mnnode int, lastcheck datetime, primary key (mn_id, log_id), foreign key (mn_id, image_id) references mn_image(mn_id, image_id), foreign key (mn_id, request_id) references mn_request(mn_id, request_id), foreign key (mn_id, log_id) references mn_log(mn_id,log_id) ) engine=innodb "
+     query_str_3 = "create table mn_reservation ( mn_id int, log_id int, image_id int, request_id int, reservation_id int, computer_id int, mnnode int, lastcheck datetime, primary key (mn_id, log_id), foreign key (mn_id, image_id) references mn_image(mn_id, image_id), foreign key (mn_id, request_id) references mn_request(mn_id, request_id), foreign key (mn_id, log_id) references mn_log(mn_id,log_id) ) engine=innodb "
  
      cursor.execute(query_str_3)
 

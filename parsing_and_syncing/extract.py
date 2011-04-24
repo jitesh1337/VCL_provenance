@@ -99,9 +99,9 @@ while True:
 	# Take information from the reservation table
 	# fields: imageid, requestid, reservationid, managementnodeid, lastcheck 
 	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
-	print "Table#reservation#%s#6" % f
-	clientsocket.send("Table#reservation#%s#6\n" % f);
-	query_str="select l.id, r.imageid, r.requestid, r.id as reservationid, r.managementnodeid, r.lastcheck from reservation r, log l, request rq where r.requestid=rq.id and rq.id=l.requestid order by imageid asc"
+	print "Table#reservation#%s#7" % f
+	clientsocket.send("Table#reservation#%s#7\n" % f);
+	query_str="select l.id, r.imageid, r.requestid, r.id as reservationid, r.computerid, r.managementnodeid, r.lastcheck from reservation r, log l, request rq where r.requestid=rq.id and rq.id=l.requestid order by imageid asc"
 	exec_query(query_str)
 
 
