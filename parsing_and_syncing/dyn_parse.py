@@ -104,6 +104,9 @@ def get_mem_size(image_id, log_id):
 	row = g_cursor.fetchone()
 	m_size = int(row[8])
 
+	g_cursor.close()
+	g_conn.close()
+
 	print "mem_size is : %d" % (m_size)
 	return m_size
 
@@ -120,6 +123,9 @@ def get_mem_free(image_id, log_id):
 
 	row = g_cursor.fetchone()
 	m_free = int(row[9])
+
+	g_cursor.close()
+	g_conn.close()
 
 	print "mem_free is : %d" % (m_free)
 	return m_free
@@ -138,6 +144,9 @@ def get_mem_used(image_id, log_id):
 	row = g_cursor.fetchone()
 	m_used = int(row[10])
 
+	g_cursor.close()
+	g_conn.close()
+
 	print "mem_used is : %d" % (m_used)
 	return m_used
 
@@ -154,6 +163,9 @@ def get_io_block_reads(image_id, log_id):
 
 	row = g_cursor.fetchone()
 	io_b_reads = int(row[12])
+
+	g_cursor.close()
+	g_conn.close()
 
 	print "io_b_reads is : %d" % (io_b_reads)
 	return io_b_reads
@@ -172,9 +184,71 @@ def get_io_block_writes(image_id, log_id):
 	row = g_cursor.fetchone()
 	io_b_writes = int(row[13])
 
+	g_cursor.close()
+	g_conn.close()
+
 	print "io_b_reads is : %d" % (io_b_writes)
 	return io_b_writes
 
+def get_paging_faults(image_id, log_id):
+
+	g_conn	= MySQLdb.connect ( host = "localhost",
+					user = "root",
+					passwd = "sm3",
+					db = "provenance")
+	g_cursor = g_conn.cursor()
+
+	sql = "select  * from mn_dyn_info where mn_id = %d and image_id = %d and log_id = %d" % (set_mn,image_id,log_id)
+	g_cursor.execute(sql)
+
+	row = g_cursor.fetchone()
+	p_faults = int(row[18])
+
+	g_cursor.close()
+	g_conn.close()
+
+	print "p_faults is : %d" % (p_faults)
+	return p_faults
+
+def get_n_tcp_conn(image_id, log_id):
+
+	g_conn	= MySQLdb.connect ( host = "localhost",
+					user = "root",
+					passwd = "sm3",
+					db = "provenance")
+	g_cursor = g_conn.cursor()
+
+	sql = "select  * from mn_dyn_info where mn_id = %d and image_id = %d and log_id = %d" % (set_mn,image_id,log_id)
+	g_cursor.execute(sql)
+
+	row = g_cursor.fetchone()
+	n_tcp_conn = int(row[19])
+
+	g_cursor.close()
+	g_conn.close()
+
+	print "n_tcp_conn is : %d" % (n_tcp_conn)
+	return n_tcp_conn
+
+def get_fs_root_used(image_id, log_id):
+
+	g_conn	= MySQLdb.connect ( host = "localhost",
+					user = "root",
+					passwd = "sm3",
+					db = "provenance")
+	g_cursor = g_conn.cursor()
+
+	sql = "select  * from mn_dyn_info where mn_id = %d and image_id = %d and log_id = %d" % (set_mn,image_id,log_id)
+	g_cursor.execute(sql)
+
+	row = g_cursor.fetchone()
+	fs_root_used = int(row[20])
+
+	g_cursor.close()
+	g_conn.close()
+
+	print "fs_root_used is : %d" % (fs_root_used)
+	return fs_root_used
 
 #Connection to the required Database (Provenance Image)
 conn = MySQLdb.connect (host = "localhost",
@@ -203,6 +277,9 @@ eth0_rx=0
 eth0_tx=0
 eth1_rx=0
 eth1_tx=0
+PAGING_FAULTS=0
+NET_NR_TCP_CONN=0
+FS_ROOT_USED=0
 
 flag=0
 
@@ -250,8 +327,19 @@ while True:
 		io_b_writes = get_io_block_writes(IMAGE_ID, LOG_ID)
 		IO_BLOCK_WRITES = ( float(IO_BLOCK_WRITES) + io_b_writes )
 
+		p_faults = get_paging_faults(IMAGE_ID, LOG_ID)
+		PAGING_FAULTS = ( float(PAGING_FAULTS) + (count*p_faults) ) / (count+1)
+
+		n_tcp_conn = get_n_tcp_conn(IMAGE_ID, LOG_ID)
+		if NET_NR_TCP_CONN < n_tcp_conn:
+			NET_NR_TCP_CONN = n_tcp_conn
+
+		fs_root_used = get_fs_root_used(IMAGE_ID, LOG_ID)
+		FS_ROOT_USED = fs_root_used
+
 		count = count + 1;
-		sql = "update mn_dyn_info set cpu_num_cores=%s, cpu_idle=%s, cpu_peak=%s, cpu_loadavg=%s, mem_size=%s, mem_free=%s, mem_used=%s, mem_peak_used=%s, io_block_reads=%s, io_block_writes=%s, eth0_rx=%s, eth0_tx=%s, eth1_rx=%s, eth1_tx=%s, row_count=%d where mn_id=%d and image_id=%d and log_id=%d " % (CPU_NUM_CORES,CPU_IDLE,CPU_PEAK,CPU_LOADAVG,MEM_SIZE,MEM_FREE,MEM_USED,MEM_PEAK_USED, IO_BLOCK_READS,IO_BLOCK_WRITES,eth0_rx,eth0_tx,eth1_rx,eth1_tx, count, set_mn, IMAGE_ID, LOG_ID)	
+
+		sql = "update mn_dyn_info set cpu_num_cores=%s, cpu_idle=%s, cpu_peak=%s, cpu_loadavg=%s, mem_size=%s, mem_free=%s, mem_used=%s, mem_peak_used=%s, io_block_reads=%s, io_block_writes=%s, eth0_rx=%s, eth0_tx=%s, eth1_rx=%s, eth1_tx=%s, row_count=%d, paging_faults=%s, peak_num_TCP_conn=%s, fs_root_used=%s where mn_id=%d and image_id=%d and log_id=%d " % (CPU_NUM_CORES,CPU_IDLE,CPU_PEAK,CPU_LOADAVG,MEM_SIZE,MEM_FREE,MEM_USED,MEM_PEAK_USED, IO_BLOCK_READS,IO_BLOCK_WRITES,eth0_rx,eth0_tx,eth1_rx,eth1_tx, count, PAGING_FAULTS, NET_NR_TCP_CONN, FS_ROOT_USED, set_mn, IMAGE_ID, LOG_ID)	
 		print sql
 		cursor.execute(sql)
 
@@ -295,7 +383,7 @@ while True:
 			mn_id = sys.argv[1]
 			str = "python /root/VCL_provenance/parsing_and_syncing/e_client.py " + mn_id
 			os.system(str)
-			sql = "insert into mn_dyn_info values (%d,%d,%d,%d, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)" % (set_mn, LOG_ID, IMAGE_ID, RESERVATION_ID)
+			sql = "insert into mn_dyn_info values (%d,%d,%d,%d, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)" % (set_mn, LOG_ID, IMAGE_ID, RESERVATION_ID)
 			print sql
 			cursor.execute(sql)
 			cursor.close()
@@ -353,6 +441,18 @@ while True:
 		eth1_rx = line_1[1]
 		line_2 = line_1[2].split("\n")
 		eth1_tx = line_2[0]
+
+	if line[0] == "PAGING_FAULTS":
+		line_1 = line[1].split("\n")
+		PAGING_FAULTS = line_1[0]
+
+	if line[0] == "NET_NR_TCP_CONN":
+		line_1 = line[1].split("\n")
+		NET_NR_TCP_CONN = line_1[0]
+
+	if line[0] == "FS_ROOT_USED":
+		line_1 = line[1].split("\n")
+		FS_ROOT_USED = line_1[0]
 
 	if line[0] == "DAEMON_NAME":
 		line_1 = line[1].split("\n")
