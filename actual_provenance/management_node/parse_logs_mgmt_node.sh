@@ -6,6 +6,7 @@ LOG_COUNT_FILE="log_counts"
 HTTPD_LOG="/var/log/httpd/error_log"
 HTTPD_SSL_LOG="/var/log/httpd/ssl_error_log"
 HTTPD_VCL_LOG="/var/log/httpd/vclssl-error_log"
+VCLD_LOG="/var/log/vcld.log"
 
 if [ ! -f "$LOG_COUNT_FILE" ]; then
         echo SSHD_CNT=`cat $SSH_LOG | wc -l` > $LOG_COUNT_FILE
@@ -13,7 +14,7 @@ if [ ! -f "$LOG_COUNT_FILE" ]; then
         echo HTTPD_CNT=`cat $HTTPD_LOG | wc -l` >> $LOG_COUNT_FILE
         echo HTTPD_SSL_CNT=`cat $HTTPD_SSL_LOG | wc -l` >> $LOG_COUNT_FILE
         echo HTTPD_VCL_CNT=`cat $HTTPD_VCL_LOG | wc -l` >> $LOG_COUNT_FILE
-	
+        echo VCLD_CNT=`cat $VCLD_LOG | wc -l` >> $LOG_COUNT_FILE
 fi
 
 . $LOG_COUNT_FILE
@@ -61,6 +62,12 @@ function parse_httpd_log()
 	echo $line | grep "\[error\]" | awk '{print "3#" $2,$3,$4,$8,$9,$10,$11,$12,$13}' | sed 's/\]//g'
 }
 
+function parse_vcld_log()
+{
+	line="$1"
+	echo $line | grep "No such virtual machine" | grep "vmware.pm" | sed 's/|/ /g' | awk '{print "3#" $1,$2,$10,$11,$12,$13,$17}'
+}
+
 SSHD_CNT_CUR=`cat $SSH_LOG | wc -l`
 DIFF=$((SSHD_CNT_CUR-SSHD_CNT))
 echo DAEMON_NAME=SSHD
@@ -73,7 +80,6 @@ tail -n $DIFF $SSH_LOG |
 echo SSHD_CNT=$SSHD_CNT_CUR > $LOG_COUNT_FILE
 echo DAEMON_END
 
-echo DAEMON_NAME=FIREWALL
 echo -n "1#`date | awk '{print $2,$3,$4}'` "
 parse_firewall;
 echo DAEMON_END
@@ -120,5 +126,18 @@ tail -n $DIFF $HTTPD_VCL_LOG |
 	done
 )
 echo HTTPD_VCL_CNT=$HTTPD_VCL_CNT_CUR >> $LOG_COUNT_FILE
+echo DAEMON_END
+
+
+echo DAEMON_NAME=VCLD
+VCLD_CNT_CUR=`cat $VCLD_LOG | wc -l`
+DIFF=$((VCLD_CNT_CUR-VCLD_CNT))
+tail -n $DIFF $VCLD_LOG |
+(
+	while read line; do
+		parse_vcld_log "$line";
+	done
+)
+echo VCLD_CNT=$VCLD_CNT_CUR >> $LOG_COUNT_FILE
 echo DAEMON_END
 
