@@ -204,13 +204,80 @@ eth0_tx=0
 eth1_rx=0
 eth1_tx=0
 
+flag=0
+
 while True:
 	line = fp.readline()
 	
 	if len(line) == 0:
 		break
+	line_2 = line
+	line_3 = line_2.split("\n")
+	line = line_3[0]
 
-	line = line.split("=")
+	if line == "LOG_START":
+
+		if IMAGE_ID == 0 and LOG_ID == 0:
+			continue
+
+		conn = MySQLdb.connect (host = "localhost",
+                           user = "root",
+                           passwd = "sm3",
+                           db = "provenance")
+		cursor = conn.cursor()
+
+		count = get_row_count(IMAGE_ID, LOG_ID)
+
+		c_idle = get_cpu_idle(IMAGE_ID, LOG_ID)
+		CPU_IDLE = ( float(CPU_IDLE) + (count*c_idle) ) / (count+1)
+
+		c_peak = get_cpu_peak(IMAGE_ID, LOG_ID)
+		if CPU_PEAK < c_peak:
+			CPU_PEAK = c_peak
+
+		m_size = get_mem_size(IMAGE_ID, LOG_ID)
+		MEM_SIZE = ( float(MEM_SIZE) + (count*m_size) ) / (count+1)
+
+		m_free = get_mem_free(IMAGE_ID, LOG_ID)
+		MEM_FREE = ( float(MEM_FREE) + (count*m_free) ) / (count+1)
+
+		m_used = get_mem_used(IMAGE_ID, LOG_ID)
+		MEM_USED = ( float(MEM_USED) + (count*m_used) ) / (count+1)
+
+		io_b_reads = get_io_block_reads(IMAGE_ID, LOG_ID)
+		IO_BLOCK_READS = ( float(IO_BLOCK_READS) + io_b_reads )
+
+		io_b_writes = get_io_block_writes(IMAGE_ID, LOG_ID)
+		IO_BLOCK_WRITES = ( float(IO_BLOCK_WRITES) + io_b_writes )
+
+		count = count + 1;
+		sql = "update mn_dyn_info set cpu_num_cores=%s, cpu_idle=%s, cpu_peak=%s, cpu_loadavg=%s, mem_size=%s, mem_free=%s, mem_used=%s, mem_peak_used=%s, io_block_reads=%s, io_block_writes=%s, eth0_rx=%s, eth0_tx=%s, eth1_rx=%s, eth1_tx=%s, row_count=%d where mn_id=%d and image_id=%d and log_id=%d " % (CPU_NUM_CORES,CPU_IDLE,CPU_PEAK,CPU_LOADAVG,MEM_SIZE,MEM_FREE,MEM_USED,MEM_PEAK_USED, IO_BLOCK_READS,IO_BLOCK_WRITES,eth0_rx,eth0_tx,eth1_rx,eth1_tx, count, set_mn, IMAGE_ID, LOG_ID)	
+		print sql
+		cursor.execute(sql)
+
+	if line == "DAEMON_END":
+		flag = 0
+		
+	if flag == 0:
+		line = line.split("=")
+
+	if flag == 1:
+		line = line.split("#")
+		LOG_SEVERITY = line[0]
+		line_1 = line[1].split("\n")
+		LOG_LINE = line_1[0]
+		i_conn =  MySQLdb.connect (host = "localhost",
+                           user = "root",
+                           passwd = "sm3",
+                           db = "provenance")
+		i_cursor = i_conn.cursor()
+		sql = "insert into mn_sec_log values ( %d, %d, \"%s\", %d, \"%s\" )" % (set_mn,LOG_ID,LOG_LINE,int(LOG_SEVERITY),DAEMON_NAME)
+		print sql
+		i_cursor.execute(sql)
+		i_cursor.close()
+		i_conn.commit()
+		i_conn.close()
+
 	if line[0] == "IMAGE_ID":
 		IMAGE_ID = int(line[1])
 		# print IMAGE_ID
@@ -219,6 +286,8 @@ while True:
 		# print LOG_ID
 	if line[0] == "RESERVATION_ID":
 		RESERVATION_ID = int(line[1])
+		if IMAGE_ID == 0 and LOG_ID == 0:
+			continue
 		# print RESERVATION_ID
 		ret = check_if_exists(IMAGE_ID, LOG_ID)
 		print ret
@@ -279,45 +348,17 @@ while True:
 		line_2 = line_1[2].split("\n")
 		eth0_tx = line_2[0]
 
-	if line[0] == "wlan0_RXTX":
+	if line[0] == "eth1_RXTX":
 		line_1 = line[1].split(":")
 		eth1_rx = line_1[1]
 		line_2 = line_1[2].split("\n")
 		eth1_tx = line_2[0]
-		conn = MySQLdb.connect (host = "localhost",
-                           user = "root",
-                           passwd = "sm3",
-                           db = "provenance")
-		cursor = conn.cursor()
 
-		count = get_row_count(IMAGE_ID, LOG_ID)
+	if line[0] == "DAEMON_NAME":
+		line_1 = line[1].split("\n")
+		DAEMON_NAME = line_1[0]
+		flag = 1
 
-		c_idle = get_cpu_idle(IMAGE_ID, LOG_ID)
-		CPU_IDLE = ( float(CPU_IDLE) + (count*c_idle) ) / (count+1)
-
-		c_peak = get_cpu_peak(IMAGE_ID, LOG_ID)
-		if CPU_PEAK < c_peak:
-			CPU_PEAK = c_peak
-
-		m_size = get_mem_size(IMAGE_ID, LOG_ID)
-		MEM_SIZE = ( float(MEM_SIZE) + (count*m_size) ) / (count+1)
-
-		m_free = get_mem_free(IMAGE_ID, LOG_ID)
-		MEM_FREE = ( float(MEM_FREE) + (count*m_free) ) / (count+1)
-
-		m_used = get_mem_used(IMAGE_ID, LOG_ID)
-		MEM_USED = ( float(MEM_USED) + (count*m_used) ) / (count+1)
-
-		io_b_reads = get_io_block_reads(IMAGE_ID, LOG_ID)
-		IO_BLOCK_READS = ( float(IO_BLOCK_READS) + io_b_reads )
-
-		io_b_writes = get_io_block_writes(IMAGE_ID, LOG_ID)
-		IO_BLOCK_WRITES = ( float(IO_BLOCK_WRITES) + io_b_writes )
-
-		count = count + 1;
-		sql = "update mn_dyn_info set cpu_num_cores=%s, cpu_idle=%s, cpu_peak=%s, cpu_loadavg=%s, mem_size=%s, mem_free=%s, mem_used=%s, mem_peak_used=%s, io_block_reads=%s, io_block_writes=%s, eth0_rx=%s, eth0_tx=%s, eth1_rx=%s, eth1_tx=%s, row_count=%d where mn_id=%d and image_id=%d and log_id=%d " % (CPU_NUM_CORES,CPU_IDLE,CPU_PEAK,CPU_LOADAVG,MEM_SIZE,MEM_FREE,MEM_USED,MEM_PEAK_USED, IO_BLOCK_READS,IO_BLOCK_WRITES,eth0_rx,eth0_tx,eth1_rx,eth1_tx, count, set_mn, IMAGE_ID, RESERVATION_ID)	
-		print sql
-		cursor.execute(sql)
 
 cursor.close()
 conn.commit()
