@@ -288,6 +288,8 @@ while True:
 	
 	if len(line) == 0:
 		break
+
+	print line
 	line_2 = line
 	line_3 = line_2.split("\n")
 	line = line_3[0]
@@ -350,6 +352,7 @@ while True:
 		line = line.split("=")
 
 	if flag == 1:
+		print line
 		line = line.split("#")
 		LOG_SEVERITY = line[0]
 		line_1 = line[1].split("\n")
