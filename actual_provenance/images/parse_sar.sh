@@ -357,5 +357,8 @@ analyze_fs_usage;
 analyze_remote_login_info;
 analyze_network_usage;
 analyze_nfs_stats;
+echo LOG_START
+./parse_logs_images.sh
+echo LOG_END
 echo END
 

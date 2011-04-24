@@ -1,6 +1,6 @@
 #!/bin/bash
 
-$PIPE=parse_sar_output
+PIPE=parse_sar_output
 
 if [ -z "`rpm -q systat`" ]; then
         sudo yum install sysstat -y
