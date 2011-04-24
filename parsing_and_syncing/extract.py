@@ -63,24 +63,12 @@ while True:
 	query_str="select I.id, I.name, I.prettyname, I.lastupdate, IR.datecreated from image I, imagerevision IR where I.id = IR.id order by I.id asc"
 	exec_query(query_str)
 
-
-	# Take information from the request table
-	# fields: requestid, logid, start, end, daterequested 
-	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
-	print "Table#request#%s#5" % f
-	clientsocket.send("Table#request#%s#5\n" % f);
-	query_str="select id as requestid, logid, start, end, daterequested from request order by requestid asc"
+	# Take information from the user table
+	# fields: id, name, prettyname, lastupdate, datecreated
+	print "Table#user#%s#4" % f
+	clientsocket.send("Table#user#%s#4\n" % f)
+	query_str="select id, unityid, firstname, lastname from user order by id asc"
 	exec_query(query_str)
-
-
-	# Take information from the reservation table
-	# fields: imageid, requestid, reservationid, managementnodeid, lastcheck 
-	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
-	print "Table#reservation#%s#5" % f
-	clientsocket.send("Table#reservation#%s#5\n" % f);
-	query_str="select r.imageid, r.requestid, r.id as reservationid, l.id, r.managementnodeid, r.lastcheck from reservation r, log l, request rq where r.requestid=rq.id and rq.id=l.requestid order by imageid asc"
-	exec_query(query_str)
-
 
 	# Take information from the computer table
 	# fields: computerid, eth0macaddress, lastcheck, reservationid, timestamp, additionalinfo
@@ -94,9 +82,26 @@ while True:
 	# Take information from the Log table
 	# fields: logid, imageid, requestid, start, initialend, finalend
 	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
-	print "Table#log#%s#6" % f
-	clientsocket.send("Table#log#%s#6\n" % f);
-	query_str="select id as logid, imageid, requestid, start, initialend, finalend from log order by logid asc"
+	print "Table#log#%s#8" % f
+	clientsocket.send("Table#log#%s#8\n" % f);
+	query_str="select id as logid, imageid, requestid, userid, computerid, start, initialend, finalend from log order by logid asc"
+	exec_query(query_str)
+
+	# Take information from the request table
+	# fields: requestid, logid, start, end, daterequested 
+	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
+	print "Table#request#%s#6" % f
+	clientsocket.send("Table#request#%s#6\n" % f);
+	query_str="select id as requestid, logid, userid, start, end, daterequested from request order by requestid asc"
+	exec_query(query_str)
+
+
+	# Take information from the reservation table
+	# fields: imageid, requestid, reservationid, managementnodeid, lastcheck 
+	#f=commands.getoutput("ifconfig gre1 | grep \"inet addr\" | awk '{print $2}' | cut -d ':' -f 2")
+	print "Table#reservation#%s#7" % f
+	clientsocket.send("Table#reservation#%s#7\n" % f);
+	query_str="select l.id, r.imageid, r.requestid, r.id as reservationid, r.computerid, r.managementnodeid, r.lastcheck from reservation r, log l, request rq where r.requestid=rq.id and rq.id=l.requestid order by imageid asc"
 	exec_query(query_str)
 
 
