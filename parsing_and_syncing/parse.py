@@ -18,6 +18,7 @@ conn = MySQLdb.connect (host = "localhost",
 #Start a connection
 cursor = conn.cursor ()
                
+flag=0
 
 #Open the Dump File
 fp = open("/tmp/output","r")
@@ -62,9 +63,13 @@ while True:
                 sql = sql + str_f
 		
 		if Table == "mn_reservation":
-			sql_1 = "delete from mn_reservation"
-			cursor.execute(sql_1)
+			if flag == 0:
+				sql_1 = "delete from mn_reservation where mn_id=%d" % (set_mn)
+				print sql_1
+				cursor.execute(sql_1)
+				flag = 1
 
+		print sql
 		try:
 			cursor.execute(sql)	
 		except MySQLdb.Error, e:

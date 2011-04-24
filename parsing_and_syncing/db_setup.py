@@ -57,7 +57,7 @@ try:
  
      cursor.execute(query_str_3)
 
-     query_str_7 = "create table mn_dyn_info ( mn_id int, log_id int, image_id int, reservation_id int, cpu_num_cores int, cpu_idle float, cpu_peak float, cpu_loadavg float, mem_size float, mem_free float, mem_used float, mem_peak_used float, io_block_reads float, io_block_writes float, eth0_rx float, eth0_tx float, eth1_rx float, eth1_tx float, row_count int, primary key (mn_id, image_id, log_id), foreign key (mn_id, image_id) references mn_image(mn_id, image_id), foreign key (mn_id, log_id) references mn_log(mn_id, log_id) ) engine=innodb"
+     query_str_7 = "create table mn_dyn_info ( mn_id int, log_id int, image_id int, reservation_id int, cpu_num_cores int, cpu_idle float, cpu_peak float, cpu_loadavg float, mem_size float, mem_free float, mem_used float, mem_peak_used float, io_block_reads float, io_block_writes float, eth0_rx float, eth0_tx float, eth1_rx float, eth1_tx float, row_count int, paging_faults float, peak_num_TCP_conn float, fs_root_used float, primary key (mn_id, image_id, log_id), foreign key (mn_id, image_id) references mn_image(mn_id, image_id), foreign key (mn_id, log_id) references mn_log(mn_id, log_id) ) engine=innodb"
 
      cursor.execute(query_str_7)
 
