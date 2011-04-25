@@ -8,10 +8,11 @@ body {
 	text-align: left;
 	font: 12px Arial, Helvetica, sans-serif;
 	font-size: 13px;
-	color: #061C37;
-	background: #EEEFE4;
-	background-image:url(images/background.png);
+	color: #000000;
+	background: #000000;
+/*	background-image:url(images/background.png);
 	background-repeat:repeat-x;
+*/
 }
 *
 {
@@ -44,6 +45,12 @@ left:14px;
 top:18px;
 }
 
+#Ptitle
+{
+font-family:"Lucida Console";	
+font-size:43px;	
+color:#A9D1FA;	
+}
 
 #header h2
 {
@@ -80,6 +87,7 @@ width:960px;
 height:54px;
 float:left;
 clear:both;
+color: #000000
 }
 
 #leftmenu

@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+  <head>
+    <title>My AJAX Chart</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+    <script type="text/javascript">
+
+      $(document).ready(function(){
+        setInterval("refreshChart", 5000); // Refresh every 5 seconds
+      });
+
+      function refreshChart() {
+        $.get("myChart.php", function(data) {
+          $("div.chartHolder").html(data);
+        });
+      }
+
+    </script>
+  </head>
+  <body>
+
+    <h1>My Chart</h1>
+    <div class="chartHolder"></div>
+
+  </body>
+</html>

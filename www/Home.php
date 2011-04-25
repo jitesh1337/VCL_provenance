@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -15,12 +16,13 @@
         
         <div id="menu">
         	<ul>
-            	<li class="menuitem"><a href="#">Home</a></li>
+            	<li class="menuitem"><a href="Home.php">Home</a></li>
                 <li class="menuitem"><a href="#">About</a></li>
-                <li class="menuitem"><a href="#">Resource Allocation</a></li>
-                <li class="menuitem"><a href="#">Operational Profile</a></li>
-                <li class="menuitem"><a href="#">Failure Statistics</a></li>
-              <li class="menuitem"><a href="#">Security</a></li>
+                <li class="menuitem"><a href="resource_allocation.php">Resource Allocation</a></li>
+                <li class="menuitem"><a href="image_operational_profile.php">Operational Profile</a></li>
+                <li class="menuitem"><a href="Statistics.php">Statistics</a></li>
+                <li class="menuitem"><a href="user_security_events.php">User Security</a></li>
+              <li class="menuitem"><a href="logs.php">Failure and Security Logs</a></li>
             </ul>
         </div>
         
@@ -33,14 +35,8 @@
                 <h3>Links</h3>
                         
                 <ul>
-                    <li><a href="#">Image Profiles</a></li>
-                    <li><a href="#">Management</a></li>
-                    <li><a href="#">Security</a></li>
-                    <li><a href="#">Group Allocation</a></li>
-                    <li><a href="#">Graphs</a></li>
-                    <li><a href="#">Provenance</a></li>
-                    <li><a href="#">How it Works</a></li>
-                    <li><a href="#">Contact US</a></li>
+                    <li><a href="Image_info.php">Image Profiles</a></li>
+                    <li><a href="Reservations.php">Active Reservations</a></li>
                     <li><a href="#">SM-3 Team</a></li>
                 </ul>
 </div>
@@ -57,11 +53,8 @@
         
         <div id="content_top"></div>
         <div id="content_main">
- 				<p>Hello whats up!!</p><br>
- 				
-<img src="http://chart.googleapis.com/chart?cht=lxy&chs=200x200&chd=t:10,20,30,40,90,120|5,60,40,50,70,100,10&chxt=x,y&chm=B,76A4FB,0,0,0" alt="" >
-
-</div>
+				<h1>Welcome to SM3 - Provenance Management System.	</h1>
+			</div>
         <div id="content_bottom"></div>
             
             <div id="footer"><h3><a href="http://www.bryantsmith.com">florida web design</a></h3></div>

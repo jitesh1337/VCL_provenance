@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="style.css" />
+<title>Team SM-3 Provenance</title>
+</head>
+<script type="text/javascript">
+/*
+function Ajax(){
+var xmlHttp, xmlHttp1;
+try{
+xmlHttp=new XMLHttpRequest();// Firefox, Opera 8.0+, Safari
+xmlHttp1=new XMLHttpRequest();
+xmlHttp2=new XMLHttpRequest();
+xmlHttp3=new XMLHttpRequest();
+xmlHttp4=new XMLHttpRequest();
+xmlHttp5=new XMLHttpRequest();
+
+}
+catch (e){
+try{
+xmlHttp=new ActiveXObject("Msxml2.XMLHTTP"); // Internet Explorer
+xmlHttp1=new ActiveXObject("Msxml2.XMLHTTP");
+xmlHttp2=new ActiveXObject("Msxml2.XMLHTTP"); 
+xmlHttp3=new ActiveXObject("Msxml2.XMLHTTP"); 
+xmlHttp4=new ActiveXObject("Msxml2.XMLHTTP"); 
+xmlHttp5=new ActiveXObject("Msxml2.XMLHTTP"); 
+}
+catch (e){
+try{
+xmlHttp=new ActiveXObject("Microsoft.XMLHTTP");
+xmlHttp1=new ActiveXObject("Microsoft.XMLHTTP");
+xmlHttp2=new ActiveXObject("Microsoft.XMLHTTP");
+xmlHttp3=new ActiveXObject("Microsoft.XMLHTTP");
+xmlHttp4=new ActiveXObject("Microsoft.XMLHTTP");
+xmlHttp5=new ActiveXObject("Microsoft.XMLHTTP");
+
+}
+catch (e){
+alert("No AJAX!?");
+return false;
+}
+}
+}
+
+xmlHttp.onreadystatechange=function(){
+if(xmlHttp.readyState==4){
+document.getElementById('Chart_1').innerHTML=xmlHttp.responseText;
+//setTimeout('Ajax()',2000);
+}
+}
+
+xmlHttp1.onreadystatechange=function(){
+if(xmlHttp1.readyState==4){
+document.getElementById('Chart_2').innerHTML=xmlHttp1.responseText;
+//setTimeout('Ajax()',2000);
+}
+}
+
+xmlHttp2.onreadystatechange=function(){
+if(xmlHttp2.readyState==4){
+document.getElementById('Chart_3').innerHTML=xmlHttp2.responseText;
+//setTimeout('Ajax()',2000);
+}
+}
+
+xmlHttp3.onreadystatechange=function(){
+if(xmlHttp3.readyState==4){
+document.getElementById('Chart_4').innerHTML=xmlHttp3.responseText;
+//setTimeout('Ajax()',2000);
+}
+}
+
+xmlHttp4.onreadystatechange=function(){
+if(xmlHttp4.readyState==4){
+document.getElementById('Chart_5').innerHTML=xmlHttp4.responseText;
+//setTimeout('Ajax()',2000);
+}
+}
+
+xmlHttp5.onreadystatechange=function(){
+if(xmlHttp5.readyState==4){
+document.getElementById('Chart_6').innerHTML=xmlHttp5.responseText;
+setTimeout('Ajax()',5000);
+}
+}
+xmlHttp.open("GET","myChart.php",true);
+xmlHttp1.open("GET","myChart.php",true);
+xmlHttp2.open("GET","myChart.php",true);
+xmlHttp3.open("GET","myChart.php",true);
+xmlHttp4.open("GET","myChart.php",true);
+xmlHttp5.open("GET","myChart.php",true);
+xmlHttp.send(null);
+xmlHttp1.send(null);
+xmlHttp2.send(null);
+xmlHttp3.send(null);
+xmlHttp4.send(null);
+xmlHttp5.send(null);
+}
+
+window.onload=function(){
+setTimeout('Ajax()',5000);
+}
+*/
+
+</script>
+<body>
+<div id="container">
+		<div id="header">
+        	<h1>SM-3<span class="off">Provenance</span></h1>
+            <h2>CSC-591 : Cloud Computing</h2>
+        </div>   
+        
+        <div id="menu">
+        	<ul>
+            	<li class="menuitem"><a href="#">Home</a></li>
+                <li class="menuitem"><a href="#">About</a></li>
+                <li class="menuitem"><a href="#">Resource Allocation</a></li>
+                <li class="menuitem"><a href="#">Operational Profile</a></li>
+                <li class="menuitem"><a href="#">Failure Statistics</a></li>
+              <li class="menuitem"><a href="#">Security</a></li>
+            </ul>
+        </div>
+        
+        <div id="leftmenu">
+
+        <div id="leftmenu_top"></div>
+
+				<div id="leftmenu_main">    
+                
+                <h3>Links</h3>
+                        
+                <ul>
+                    <li><a href="#">Image Profiles</a></li>
+                    <li><a href="#">Management</a></li>
+                    <li><a href="#">Security</a></li>
+                    <li><a href="#">Group Allocation</a></li>
+                    <li><a href="#">Graphs</a></li>
+                    <li><a href="#">Provenance</a></li>
+                    <li><a href="#">How it Works</a></li>
+                    <li><a href="#">Contact US</a></li>
+                    <li><a href="#">SM-3 Team</a></li>
+                </ul>
+</div>
+                
+                
+              <div id="leftmenu_bottom"></div>
+        </div>
+        
+        
+        
+        
+		<div id="content">
+        
+        
+        <div id="content_top"></div>
+        <div id="content_main">
+			<form method="GET" action="index.php">
+			<table summary="" >
+			<tr>
+			<td>Start Date : </td><td><select name="start_month">
+			<option value="1">Jan</option>			
+			<option value="2">Feb</option>
+			<option value="3">March</option>
+			<option value="4">April</option>
+			<option value="5">May</option>
+			<option value="6">June</option>
+			<option value="7">July</option>
+			<option value="8">August</option>
+			<option value="9">September</option>
+			<option value="10">October</option>
+			<option value="11">November</option>
+			<option value="12">December</option>			
+			</select></td><td> <select name="start_day">
+			<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option>
+			<option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option> 
+			<option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option>
+			<option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option>			
+			<option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option>
+			<option value="31">31</option> </select></td><td><select name="start_year">
+			<option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option>
+			</select></td></tr>
+			<tr><td>End Date :</td>
+			<td><select name="end_month">
+			<option value="1">Jan</option>			
+			<option value="2">Feb</option>
+			<option value="3">March</option>
+			<option value="4">April</option>
+			<option value="5">May</option>
+			<option value="6">June</option>
+			<option value="7">July</option>
+			<option value="8">August</option>
+			<option value="9">September</option>
+			<option value="10">October</option>
+			<option value="11">November</option>
+			<option value="12">December</option>			
+			</select></td><td><select name="end_date">
+			<option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option>
+			<option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option> 
+			<option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option>
+			<option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option>			
+			<option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option>
+			<option value="31">31</option> </select></td><td><select name="end_year">
+			<option value="2008">2008</option><option value="2009">2009</option><option value="2010">2010</option><option value="2011">2011</option>
+			</select></td>
+			<tr><td></td><td><input type="submit"></td><td></td></tr>
+			</table>			
+			</form>
+			</div>
+        <div id="content_bottom"></div>
+            
+            <div id="footer"><h3><a href="http://www.bryantsmith.com">florida web design</a></h3></div>
+      </div>
+   </div> //
+<div style="text-align: center; font-size: 0.75em;">Design downloaded from <a href="http://www.freewebtemplates.com/">free website templates</a>.</div></body>
+</html>
