@@ -227,8 +227,8 @@
 			</div>
         <div id="content_bottom"></div>
             
-            <div id="footer"><h3><a href="http://www.bryantsmith.com">florida web design</a></h3></div>
+            <div id="footer"><h3><a href="http://www.bryantsmith.com"></a></h3></div>
       </div>
    </div> //
-<div style="text-align: center; font-size: 0.75em;">Design downloaded from <a href="http://www.freewebtemplates.com/">free website templates</a>.</div></body>
+<div style="text-align: center; font-size: 0.75em;">Design downloaded from <a href="http://www.freewebtemplates.com/"></a>.</div></body>
 </html>
