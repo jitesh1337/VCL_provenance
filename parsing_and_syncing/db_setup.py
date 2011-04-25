@@ -61,7 +61,7 @@ try:
 
      cursor.execute(query_str_7)
 
-     query_str_9 = "create table mn_sec_log ( mn_id int, log_id int, log_line varchar(500), severity int, daemon_name varchar(50), foreign key (mn_id) references mn_info(mn_id) ) engine=innodb "
+     query_str_9 = "create table mn_sec_log ( mn_id int, log_id int, log_line varchar(500), severity int, daemon_name varchar(50), sec_log_id int auto_increment primary key, foreign key (mn_id) references mn_info(mn_id) ) engine=innodb "
  
      cursor.execute(query_str_9)
 

@@ -1,0 +1,43 @@
+<html>
+<head>
+<script type="text/javascript">
+function callChart()
+{
+alert("Fucntion called.");
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+alert("Hello!");
+xmlHttp.onreadystatechange=function(){
+	if(xmlHttp.readyState==4){
+		alert("I am an alert box!");
+		document.getElementById('txtHint').innerHTML=xmlHttp.responseText;
+		setTimeout('callChart()',5000);
+	}	
+}
+alert("Getting PHP data.");
+xmlhttp.open("GET","myChart.php",true);
+xmlhttp.send();
+}
+
+window.onload=function(){
+	setTimeout('callChart()',5000);
+}
+</script>
+</head>
+<body>
+
+<form>
+<button type="button" onclick="callChart()">Display Date</button>
+
+</form>
+<br />
+<div id="txtHint"><b>Person info will be listed here.</b></div>
+
+</body>
+</html>

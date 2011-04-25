@@ -1,0 +1,14 @@
+<?php
+include("db_conn.php");
+
+$mn_id=$_GET['mn_id'];
+$log_id=$_GET['log_id'];
+
+$result=mysql_query("SELECT cpu_num_cores, cpu_idle, cpu_peak from mn_dyn_info where mn_id='$mn_id' AND log_id='$log_id' ");
+
+while($rows=mysql_fetch_array($result)) {
+echo "Data: ".$rows['0']." ".$rows['1']." ".$rows['2']."<br>";
+}
+
+
+?>

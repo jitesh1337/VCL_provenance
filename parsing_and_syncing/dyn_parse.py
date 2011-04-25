@@ -362,7 +362,7 @@ while True:
                            passwd = "sm3",
                            db = "provenance")
 		i_cursor = i_conn.cursor()
-		sql = "insert into mn_sec_log values ( %d, %d, \"%s\", %d, \"%s\" )" % (set_mn,LOG_ID,LOG_LINE,int(LOG_SEVERITY),DAEMON_NAME)
+		sql = "insert into mn_sec_log values ( %d, %d, \"%s\", %d, \"%s\", DEFAULT )" % (set_mn,LOG_ID,LOG_LINE,int(LOG_SEVERITY),DAEMON_NAME)
 		print sql
 		i_cursor.execute(sql)
 		i_cursor.close()
