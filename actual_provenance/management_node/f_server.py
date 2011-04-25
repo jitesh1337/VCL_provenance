@@ -4,6 +4,7 @@ import socket
 import sys
 import os
 import MySQLdb
+import commands
 
 #Connection to the required Database (Provenance Image)
 conn = MySQLdb.connect (host = "localhost",
