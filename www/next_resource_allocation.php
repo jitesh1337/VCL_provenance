@@ -13,7 +13,7 @@ $imagename=mysql_fetch_row($result);
 echo "Image Name: ".$imagename['0']." on Management Node ".$mn_id."<br>";
 echo "<br><hr><br>";
 //------------cpuidle_time-------------------
-
+$limit=0;
 echo "<table><tr><td>";
 
 echo "<img src='http://chart.apis.google.com/chart?chxt=y&chbh=a&chs=300x225&cht=bvg&chco=A2C180,3D7930&chd=t:";
@@ -985,7 +985,7 @@ if( $max < $limit ){
 echo "&chtt=eth1+Transmitted+Bytes' width='300' height='225' alt='CPU Idle Time'style='float:center' />";
 }
 else {
-echo "&chxr=0,0,".$max."&chds=0,".$max."&chtt=Percentage+of+times+Root+filesystem+used' width='300' height='225' alt='CPU Idle Time'  style='float:center' />";	
+echo "&chxr=0,0,".$max."&chds=0,".$max."&chtt=Percentage+of+Root+filesystem+used' width='300' height='225' alt='CPU Idle Time'  style='float:center' />";	
 }	
 
 //-----------Key-------------------------------------------------
@@ -995,7 +995,7 @@ $key=mysql_query("select L.start from mn_log as L, mn_dyn_info as D
 					AND L.mn_id=D.mn_id AND L.image_id=D.image_id AND L.log_id=D.log_id ORDER BY L.log_id" );
 $i=1;
 echo "</td><td><table border='1'><tr><th colspan='2'>X-Axis: Time of Reservation</th></tr>";
-echo "<tr><th colspan='2'>Y-Axis: Number of times filesystem<br> root access used</th></tr>";
+echo "<tr><th colspan='2'>Y-Axis: Percentage of root filesystem used</th></tr>";
 echo "<tr><th colspan='2'>Graph Key</th></tr>";
 while(($key_result=mysql_fetch_array($key))) {					
 echo "<tr><td>".$i."</td><td>Reservation@".$key_result['0']."</td></tr>";

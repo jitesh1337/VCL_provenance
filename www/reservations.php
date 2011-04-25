@@ -1,7 +1,7 @@
 <html>
 <?php
 include("db_conn.php");
-echo "<h1><u>The Reservation Analysis Graphs</u></h1><br>";
+echo "<h1><u>Active Reservations</u></h1><br>";
 $curr_row = 1;
 $max = -1;
 $limit = 0;

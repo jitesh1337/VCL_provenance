@@ -1,6 +1,6 @@
 <?php
 include("db_conn.php");
-echo "<h1 style='font-family:Lucida Console'><u>IMAGE PROFILES<u></h1><br>";
+echo "<h1 style='font-family:Lucida Console'><u>MANAGEMENT NODE PROFILES<u></h1><br>";
 for ( $i=1; $i<=3; $i++ ) {
 $total_reservations = 0;	
 echo "<table cellpadding='4' border='1'>";

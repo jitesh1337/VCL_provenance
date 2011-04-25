@@ -84,7 +84,7 @@ function get_sec_log() {
                 <h3>Links</h3>
                         
                 <ul>
-                    <li><a href="Image_info.php">Image Profiles</a></li>
+                    <li><a href="Image_info.php">Management Node Profiles</a></li>
                     <li><a href="Reservations.php">Active Reservations</a></li>
                     <li><a href="#">SM-3 Team</a></li>
                 </ul>
