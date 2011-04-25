@@ -1,11 +1,11 @@
 <?php
-$con = mysql_connect("localhost:3306","root","root");
+$con = mysql_connect("localhost:3306","root","sm3");
 if (!$con)
   {
   die('Could not connect: ' . mysql_error());
   }
 
-mysql_select_db("provenance3", $con);
+mysql_select_db("provenance", $con);
 
 
 ?>
