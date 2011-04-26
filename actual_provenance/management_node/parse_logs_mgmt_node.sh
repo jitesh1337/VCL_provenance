@@ -80,6 +80,7 @@ tail -n $DIFF $SSH_LOG |
 echo SSHD_CNT=$SSHD_CNT_CUR > $LOG_COUNT_FILE
 echo DAEMON_END
 
+echo DAEMON_NAME=FIREWALL
 echo -n "1#`date | awk '{print $2,$3,$4}'` "
 parse_firewall;
 echo DAEMON_END
